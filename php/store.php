@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost";
+$servername = "360brave_controllween-db";
 $username = "root";
-$password = "";
-$dbname = "halloween_party";
+$password = "Senhafacil123@";
+$dbname = "360brave";
 
 // Conexão
 $conn = new mysqli($servername, $username, $password, $dbname);

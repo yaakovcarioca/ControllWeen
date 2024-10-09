@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halloween Party - Admin</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Halloween Party - Cadastro</h1>
+        <form id="registerForm">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="phone">Telefone:</label>
+            <input type="text" id="phone" name="phone" required>
+            <button type="submit">Cadastrar e Gerar QR Code</button>
+        </form>
+        <div id="qrcode"></div>
+        <button id="shareBtn" style="display:none;">Compartilhar QR Code</button>
+    </div>
+    <script src="assets/js/qrcode.min.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

@@ -1,5 +1,9 @@
 <?php
-$servername = "vps.360brave.com:666";
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
+
+$servername = "vps.360brave.com";
 $username = "root";
 $password = "Senhafacil123@";
 $dbname = "360brave";
@@ -12,11 +16,18 @@ if ($conn->connect_error) {
   die("Conexão falhou: " . $conn->connect_error);
 }
 
-// Inserir dados
+// Inserir dados do POST
 $name = $_POST['name'];
 $phone = $_POST['phone'];
 $qr_code = $_POST['qr_code'];
 
+// Validação
+if(empty($name) || empty($phone) || empty($qr_code)) {
+    echo "Dados incompletos!";
+    exit;
+}
+
+// Inserir no banco
 $sql = "INSERT INTO people (name, phone, qr_code) VALUES ('$name', '$phone', '$qr_code')";
 
 if ($conn->query($sql) === TRUE) {

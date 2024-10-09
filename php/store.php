@@ -1,5 +1,5 @@
 <?php
-$servername = "360brave_controllween-db";
+$servername = "vps.360brave.com:666";
 $username = "root";
 $password = "Senhafacil123@";
 $dbname = "360brave";

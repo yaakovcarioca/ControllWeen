@@ -25,7 +25,7 @@ const Register = () => {
     formData.append('qr_code', firstName);
 
     try {
-      const response = await fetch('http://localhost/server/store.php', {
+      const response = await fetch('https://controllween.360brave.com/server/store.php', {
         method: 'POST',
         body: formData
       });

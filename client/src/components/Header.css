@@ -1,0 +1,46 @@
+/* Estilo do header e menu de navegação */
+.header {
+    background-color: #222; /* Cor de fundo do cabeçalho */
+    padding: 1rem 0; /* Espaçamento interno no cabeçalho */
+    text-align: center;
+  }
+  
+  .menu {
+    list-style: none; /* Remove a marcação de lista padrão */
+    display: flex; /* Exibe os itens da lista em linha */
+    justify-content: center; /* Centraliza os itens do menu */
+    gap: 2rem; /* Espaçamento entre os itens */
+    padding: 0; /* Remove o espaçamento padrão */
+    margin: 0; /* Remove margens padrão */
+  }
+  
+  .menu li {
+    display: inline; /* Exibe os itens da lista em linha */
+  }
+  
+  .menu li a {
+    color: #f8f8f8; /* Cor do texto dos links */
+    text-decoration: none; /* Remove o sublinhado dos links */
+    font-size: 1.2rem; /* Tamanho da fonte dos links */
+    padding: 0.5rem 1rem; /* Espaçamento interno dos links */
+    border: 2px solid transparent; /* Bordas invisíveis que serão visíveis no hover */
+    transition: border-color 0.3s ease, color 0.3s ease; /* Transição suave para as mudanças de cor e borda no hover */
+  }
+  
+  .menu li a:hover {
+    color: orange; /* Cor laranja para o texto ao passar o mouse */
+    border-color: orange; /* Bordas laranjas ao passar o mouse */
+  }
+  
+  /* Responsividade para dispositivos móveis */
+  @media (max-width: 768px) {
+    .menu {
+      flex-direction: column; /* Exibe o menu em coluna em telas menores */
+      gap: 1rem; /* Diminui o espaçamento entre os itens no mobile */
+    }
+  
+    .menu li a {
+      font-size: 1rem; /* Diminui o tamanho da fonte em telas menores */
+    }
+  }
+  

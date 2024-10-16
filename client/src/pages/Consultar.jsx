@@ -17,7 +17,7 @@ function Consultar() {
 
   const handleDelete = (id) => {
     if (window.confirm('Tem certeza que deseja excluir?')) {
-      fetch(`/api/excluir.php?id=${id}`, {
+      fetch(`../../../api/excluir.php?id=${id}`, {
         method: 'DELETE',
       })
         .then((response) => response.json())

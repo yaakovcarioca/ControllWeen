@@ -3,6 +3,7 @@ import { Html5Qrcode } from 'html5-qrcode';
 
 function Validar() {
   const [mensagem, setMensagem] = useState('');
+  const [processando, setProcessando] = useState(false);
   const qrCodeRef = useRef(null);
 
   useEffect(() => {
@@ -18,36 +19,47 @@ function Validar() {
         try {
           // Parar o escaneamento após a leitura bem-sucedida
           html5QrCode.stop().then(() => {
-            // Supondo que o QR Code contenha uma URL com o ID como parâmetro, por exemplo: https://.../validar?id=123
-            const url = new URL(decodedText);
-            const convidadoId = url.searchParams.get('id');
+            setProcessando(true); // Exibe mensagem de "Processando..."
+            
+            try {
+              // Supondo que o QR Code contenha uma URL com o ID como parâmetro, por exemplo: https://.../validar?id=123
+              const url = new URL(decodedText);
+              const convidadoId = url.searchParams.get('id');
 
-            // Verifica se o ID foi encontrado no QR Code existia um erro aqui
-            if (!convidadoId) {
-              setMensagem('QR Code inválido. ID não encontrado.');
-              return;
-            }
+              // Verifica se o ID foi encontrado no QR Code
+              if (!convidadoId) {
+                setMensagem('QR Code inválido. ID não encontrado.');
+                setProcessando(false);
+                return;
+              }
 
-            // Fazer a requisição para validar o ID obtido do QR Code
-            fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/validar', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ id: convidadoId }), // ID do convidado vindo do QR Code
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                if (data.success) {
-                  setMensagem(data.message);
-                } else {
-                  setMensagem(data.message || 'Erro ao validar o convidado.');
-                }
+              // Fazer a requisição para validar o ID obtido do QR Code
+              fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/validar', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: convidadoId }), // ID do convidado vindo do QR Code
               })
-              .catch((error) => {
-                console.error('Erro ao validar:', error);
-                setMensagem('Erro ao validar o convidado.');
-              });
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.success) {
+                    setMensagem(data.message);
+                  } else {
+                    setMensagem(data.message || 'Erro ao validar o convidado.');
+                  }
+                  setProcessando(false);
+                })
+                .catch((error) => {
+                  console.error('Erro ao validar:', error);
+                  setMensagem('Erro ao validar o convidado.');
+                  setProcessando(false);
+                });
+            } catch (error) {
+              console.error('Erro ao processar a URL do QR Code:', error);
+              setMensagem('Erro ao processar a URL do QR Code.');
+              setProcessando(false);
+            }
           });
         } catch (error) {
           console.error('Erro ao processar o QR Code:', error);
@@ -69,6 +81,7 @@ function Validar() {
     <div>
       <h2>Validar QR Code</h2>
       <div id="qr-reader" style={{ width: '300px' }}></div>
+      {processando && <p>Processando...</p>}
       {mensagem && <p>{mensagem}</p>}
     </div>
   );

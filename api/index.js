@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const QRCode = require('qrcode');
+const path = require('path');
 require('dotenv').config();
 
 const cadastrarRoute = require('./routes/cadastrar');
@@ -25,7 +26,7 @@ app.use('/cadastrar', cadastrarRoute);
 app.use('/validar', validarRoute);
 app.use('/gerar-qrcode', qrcodeRoute);
 app.use('/convidados', consultarRoute); // Adicione a rota para listar convidados
-//torna publico a pasta QR Codes
+// Permite servir arquivos estáticos da pasta 'public'
 app.use('/public', express.static(path.join(__dirname, 'public')));
 // Iniciar o servidor
 app.listen(PORT, () => {

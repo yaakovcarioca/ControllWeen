@@ -121,6 +121,7 @@ function Validar() {
         }
         .modal-content p {
           margin-bottom: 10px;
+          color: black;
         }
         .modal-content button {
           padding: 10px 20px;

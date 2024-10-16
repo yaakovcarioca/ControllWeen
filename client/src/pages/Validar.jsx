@@ -79,10 +79,29 @@ function Validar() {
     };
   }, []);
 
-  // Função para fechar o modal
+  // Função para fechar o modal e reiniciar a leitura do QR Code
   const closeModal = () => {
     setModalVisible(false);
     setMensagem('');
+    setProcessando(false);
+
+    // Reinicia o QR code scanner
+    const html5QrCode = new Html5Qrcode("qr-reader");
+    html5QrCode.start(
+      { facingMode: "environment" }, // Pode ser 'user' para câmera frontal
+      {
+        fps: 10,
+        qrbox: { width: 250, height: 250 },
+      },
+      (decodedText) => {
+        // Lógica de leitura do QR code...
+      },
+      (errorMessage) => {
+        console.warn('Erro na leitura do QR Code:', errorMessage);
+      }
+    ).catch((err) => {
+      console.error('Erro ao reiniciar o QR Code Reader:', err);
+    });
   };
 
   return (
@@ -114,22 +133,26 @@ function Validar() {
           align-items: center;
         }
         .modal-content {
-          background: white;
+          background: #1a1a1a; /* Fundo escuro para melhor contraste */
           padding: 20px;
           border-radius: 5px;
           text-align: center;
+          color: #ffffff; /* Texto branco para visibilidade */
         }
         .modal-content p {
           margin-bottom: 10px;
-          color: black;
+          color: #ffffff; /* Texto branco */
         }
         .modal-content button {
           padding: 10px 20px;
           border: none;
-          background: #007bff;
-          color: white;
+          background: #007bff; /* Cor de fundo do botão */
+          color: white; /* Texto branco */
           border-radius: 5px;
           cursor: pointer;
+        }
+        .modal-content button:hover {
+          background: #0056b3; /* Cor de fundo do botão ao passar o mouse */
         }
       `}</style>
     </div>

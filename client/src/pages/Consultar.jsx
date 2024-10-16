@@ -71,17 +71,16 @@ function Consultar() {
       .then((data) => {
         if (data.success) {
           const qrCodeUrl = data.qrcode;
-
+  
           // Monta a mensagem para enviar via WhatsApp
           const mensagem = `Olá, você está recebendo o seu QR Code para entrada na festa de Halloween. Guarde para garantir sua entrada.`;
-
+  
           // Codifica a mensagem para ser usada na URL
           const mensagemCodificada = encodeURIComponent(mensagem);
-          const qrCodeEncoded = encodeURIComponent(qrCodeUrl);
-
-          // Cria a URL do WhatsApp
-          const whatsappUrl = `https://wa.me/${telefone}?text=${mensagemCodificada}%0A${qrCodeEncoded}`;
-
+  
+          // Cria a URL do WhatsApp com a imagem anexada
+          const whatsappUrl = `https://wa.me/${telefone}?text=${mensagemCodificada}%0A${qrCodeUrl}`;
+  
           // Abre a URL do WhatsApp para enviar a mensagem
           window.open(whatsappUrl, '_blank');
         } else {

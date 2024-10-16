@@ -25,7 +25,8 @@ app.use('/cadastrar', cadastrarRoute);
 app.use('/validar', validarRoute);
 app.use('/gerar-qrcode', qrcodeRoute);
 app.use('/convidados', consultarRoute); // Adicione a rota para listar convidados
-
+//torna publico a pasta QR Codes
+app.use('/public', express.static(path.join(__dirname, 'public')));
 // Iniciar o servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);

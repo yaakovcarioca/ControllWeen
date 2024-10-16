@@ -108,6 +108,7 @@ function Consultar() {
               <td>{convidado.telefone}</td>
               <td>
                 <button onClick={() => handleDelete(convidado.id)}>Excluir</button>
+                <br/>
                 <button onClick={() => handleSendQr(convidado.id, convidado.telefone)}>Enviar QR</button>
               </td>
               <td>{convidado.validado === 'yes' ? 'Sim' : 'Não'}</td>

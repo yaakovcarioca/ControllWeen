@@ -1,6 +1,6 @@
 <?php
 include './db/config.php';
-include 'cors.php';
+include './cors.php';
 
 $id = $_GET['id'];
 

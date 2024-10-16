@@ -12,7 +12,7 @@ function Cadastrar() {
     const novoConvidado = { nome, telefone };
 
     // Chamar o endpoint de cadastro via POST
-    fetch('../../../api/cadastrar.php', {
+    fetch('./api/cadastrar.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

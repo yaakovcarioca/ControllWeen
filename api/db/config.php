@@ -1,5 +1,5 @@
 <?php
-$host = '360brave_controllween-db';
+$host = '77.37.40.68';
 $dbname = '360brave';
 $username = 'mysql';
 $password = 'Senhafacil123@';

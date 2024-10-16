@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { QrReader } from 'react-qr-reader';
+import { QrReader } from 'react-qr-scanner';
 
 function Validar() {
   const [mensagem, setMensagem] = useState('');
 
-  const handleScan = (data) => {
-    if (data) {
-      // Enviar o ID lido do QR Code para o backend
-      fetch(`../../../api/validar.php?id=${data}`)
+  const handleScan = (result) => {
+    if (result) {
+      fetch(`/api/validar.php?id=${result.text}`)
         .then((response) => response.json())
-        .then((result) => {
-          if (result.message) {
-            setMensagem(result.message);
+        .then((data) => {
+          if (data.message) {
+            setMensagem(data.message);
           }
         })
         .catch((error) => {
@@ -28,7 +27,11 @@ function Validar() {
   return (
     <div>
       <h2>Validar QR Code</h2>
-      <QrReader delay={300} onError={handleError} onScan={handleScan} />
+      <QrReader
+        onResult={handleScan}
+        onError={handleError}
+        style={{ width: '100%' }}
+      />
       {mensagem && <p>{mensagem}</p>}
     </div>
   );

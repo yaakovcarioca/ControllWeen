@@ -15,29 +15,43 @@ function Validar() {
         qrbox: { width: 250, height: 250 },
       },
       (decodedText) => {
-        // Parar o escaneamento após a leitura bem-sucedida
-        html5QrCode.stop().then(() => {
-          // Fazer a requisição para validar o ID obtido do QR Code
-          fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/validar', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: convidadoId }), // ID do convidado vindo do QR Code
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.success) {
-                setMensagem(`Olá, ${data.message}, boa festa!`);
-              } else {
-                setMensagem(data.message || 'Erro ao validar o convidado.');
-              }
+        try {
+          // Parar o escaneamento após a leitura bem-sucedida
+          html5QrCode.stop().then(() => {
+            // Extraímos o ID do texto decodificado (supondo que seja uma URL com parâmetro ?id=)
+            const url = new URL(decodedText);
+            const convidadoId = url.searchParams.get('id');
+
+            if (!convidadoId) {
+              setMensagem('QR Code inválido. ID não encontrado.');
+              return;
+            }
+
+            // Fazer a requisição para validar o ID obtido do QR Code
+            fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/validar', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ id: convidadoId }),
             })
-            .catch((error) => {
-              console.error('Erro ao validar:', error);
-              setMensagem('Erro ao validar o convidado.');
-            });
-        });
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.success) {
+                  setMensagem(data.message);
+                } else {
+                  setMensagem(data.message || 'Erro ao validar o convidado.');
+                }
+              })
+              .catch((error) => {
+                console.error('Erro ao validar:', error);
+                setMensagem('Erro ao validar o convidado.');
+              });
+          });
+        } catch (error) {
+          console.error('Erro ao processar o QR Code:', error);
+          setMensagem('Erro ao processar o QR Code.');
+        }
       },
       (errorMessage) => {
         console.warn('Erro na leitura do QR Code:', errorMessage);

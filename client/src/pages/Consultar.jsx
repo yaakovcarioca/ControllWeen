@@ -12,24 +12,40 @@ function Consultar() {
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => response.json())
-      .then((data) => setConvidados(data.convidados))
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erro ao buscar convidados');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          setConvidados(data.convidados);
+        } else {
+          setMensagem('Erro ao carregar a lista de convidados.');
+        }
+      })
       .catch((error) => {
         console.error('Erro ao buscar convidados:', error);
         setMensagem('Erro ao carregar a lista de convidados.');
       });
   }, []);
   
-
+  // Função para excluir um convidado
   const handleDelete = (id) => {
     if (window.confirm('Tem certeza que deseja excluir?')) {
-      fetch(`https://360brave-controllween-api-360.370fnn.easypanel.host/convidados/excluir.php?id=${id}`, {
+      fetch(`https://360brave-controllween-api-360.370fnn.easypanel.host/convidados/${id}`, {
         method: 'DELETE',
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Erro ao excluir o convidado');
+          }
+          return response.json();
+        })
         .then((data) => {
           if (data.success) {
-            setConvidados(convidados.filter((convidado) => convidado.id !== id));
+            setConvidados((prevConvidados) => prevConvidados.filter((convidado) => convidado.id !== id));
             setMensagem('Convidado excluído com sucesso.');
           } else {
             setMensagem('Erro ao excluir o convidado.');

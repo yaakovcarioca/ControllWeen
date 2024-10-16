@@ -6,7 +6,7 @@ function Consultar() {
 
   // Chamada à API para buscar todos os convidados
   useEffect(() => {
-    fetch('./api/convidados.php')
+    fetch('../../api/convidados.php')
       .then((response) => response.json())
       .then((data) => setConvidados(data))
       .catch((error) => {
@@ -17,7 +17,7 @@ function Consultar() {
 
   const handleDelete = (id) => {
     if (window.confirm('Tem certeza que deseja excluir?')) {
-      fetch(`./api/excluir.php?id=${id}`, {
+      fetch(`../../api/excluir.php?id=${id}`, {
         method: 'DELETE',
       })
         .then((response) => response.json())

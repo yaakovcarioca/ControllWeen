@@ -18,10 +18,11 @@ function Validar() {
         try {
           // Parar o escaneamento após a leitura bem-sucedida
           html5QrCode.stop().then(() => {
-            // Extraímos o ID do texto decodificado (supondo que seja uma URL com parâmetro ?id=)
+            // Supondo que o QR Code contenha uma URL com o ID como parâmetro, por exemplo: https://.../validar?id=123
             const url = new URL(decodedText);
             const convidadoId = url.searchParams.get('id');
 
+            // Verifica se o ID foi encontrado no QR Code existia um erro aqui
             if (!convidadoId) {
               setMensagem('QR Code inválido. ID não encontrado.');
               return;
@@ -33,7 +34,7 @@ function Validar() {
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ id: convidadoId }),
+              body: JSON.stringify({ id: convidadoId }), // ID do convidado vindo do QR Code
             })
               .then((response) => response.json())
               .then((data) => {

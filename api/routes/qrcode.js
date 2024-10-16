@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  const qrText = `https://meu-backend.com/validar?id=${id}`;
+  const qrText = `https://360brave-controllween-api-360.370fnn.easypanel.host/validar?id=${id}`;
 
   QRCode.toDataURL(qrText, (err, url) => {
     if (err) {

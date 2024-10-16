@@ -12,22 +12,24 @@ function Cadastrar() {
     const novoConvidado = { nome, telefone };
 
     // Chamar o endpoint de cadastro via POST
-    fetch('https://controllween.360brave.com/api/cadastrar.php', {
+    fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/cadastrar', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(novoConvidado),
+      body: JSON.stringify({
+        nome: nome.trim(),
+        telefone: telefone.trim(),
+      }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
           setMensagem('Convidado cadastrado com sucesso!');
-          // Limpar os campos após cadastro
           setNome('');
           setTelefone('');
         } else {
-          setMensagem('Erro ao cadastrar o convidado.');
+          setMensagem(data.message || 'Erro ao cadastrar o convidado.');
         }
       })
       .catch((error) => {

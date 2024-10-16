@@ -17,7 +17,7 @@ function Consultar() {
 
   const handleDelete = (id) => {
     if (window.confirm('Tem certeza que deseja excluir?')) {
-      fetch(`https://controllween.360brave.com/api/excluir.php?id=${id}`, {
+      fetch(`https://360brave-controllween-api-360.370fnn.easypanel.host/convidados/excluir.php?id=${id}`, {
         method: 'DELETE',
       })
         .then((response) => response.json())

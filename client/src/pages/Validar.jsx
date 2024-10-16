@@ -18,15 +18,23 @@ function Validar() {
         // Parar o escaneamento após a leitura bem-sucedida
         html5QrCode.stop().then(() => {
           // Fazer a requisição para validar o ID obtido do QR Code
-          fetch(`https://controllween.360brave.com/api/validar.php?id=${decodedText}`)
+          fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/validar', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: convidadoId }), // ID do convidado vindo do QR Code
+          })
             .then((response) => response.json())
             .then((data) => {
-              if (data.message) {
-                setMensagem(data.message);
+              if (data.success) {
+                setMensagem(`Olá, ${data.message}, boa festa!`);
+              } else {
+                setMensagem(data.message || 'Erro ao validar o convidado.');
               }
             })
             .catch((error) => {
-              console.error('Erro ao validar convidado:', error);
+              console.error('Erro ao validar:', error);
               setMensagem('Erro ao validar o convidado.');
             });
         });

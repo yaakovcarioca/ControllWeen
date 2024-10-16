@@ -18,19 +18,19 @@ function Consultar() {
 
     // Chamada à API para contar usuários cadastrados e validados
     fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/convidados/contar')
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        setTotalCadastrados(data.total);
-        setTotalValidados(data.validados);
-      }
-    })
-    .catch((error) => {
-      console.error('Erro ao contar usuários:', error);
-      setMensagem('Erro ao contar os usuários.');
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setTotalCadastrados(data.total);
+          setTotalValidados(data.validados);
+        }
+      })
+      .catch((error) => {
+        console.error('Erro ao contar usuários:', error);
+        setMensagem('Erro ao contar os usuários.');
+      });
   }, []);
-  
+
   const handleDelete = (id) => {
     if (window.confirm('Tem certeza que deseja excluir?')) {
       fetch(`https://360brave-controllween-api-360.370fnn.easypanel.host/convidados/${id}`, {
@@ -56,6 +56,27 @@ function Consultar() {
           setMensagem('Erro ao excluir o convidado.');
         });
     }
+  };
+
+  const handleSendQr = (id, telefone) => {
+    fetch(`https://360brave-controllween-api-360.370fnn.easypanel.host/gerar-qrcode/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          const qrCodeUrl = data.qrcode;
+          const message = `Olá, você está recebendo o seu QR Code para entrada na festa de Halloween. Guarde para garantir sua entrada.`;
+          const whatsappUrl = `https://api.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(message)}&attachment=${encodeURIComponent(qrCodeUrl)}`;
+
+          // Abre a URL do WhatsApp para enviar o QR Code
+          window.open(whatsappUrl, '_blank');
+        } else {
+          setMensagem('Erro ao gerar o QR Code.');
+        }
+      })
+      .catch((error) => {
+        console.error('Erro ao gerar o QR Code:', error);
+        setMensagem('Erro ao gerar o QR Code.');
+      });
   };
 
   return (
@@ -87,6 +108,7 @@ function Consultar() {
               <td>{convidado.telefone}</td>
               <td>
                 <button onClick={() => handleDelete(convidado.id)}>Excluir</button>
+                <button onClick={() => handleSendQr(convidado.id, convidado.telefone)}>Enviar QR</button>
               </td>
               <td>{convidado.validado === 'yes' ? 'Sim' : 'Não'}</td>
             </tr>

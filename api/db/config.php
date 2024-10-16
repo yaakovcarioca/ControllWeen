@@ -1,5 +1,5 @@
 <?php
-$host = 'vps.360brave.com';
+$host = 'localhost';
 $dbname = '360brave';
 $username = 'mysql';
 $password = 'Senhafacil123@';

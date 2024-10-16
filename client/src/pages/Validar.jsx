@@ -95,7 +95,7 @@ function Validar() {
       {modalVisible && (
         <div className="modal">
           <div className="modal-content">
-            <p>{mensagem}</p>
+            <p style={{ color: 'black' }}>{mensagem}</p>
             <button onClick={closeModal}>Fechar</button>
           </div>
         </div>

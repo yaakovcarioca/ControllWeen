@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: ['@babel/runtime'],
+      external: ['react-qr-scanner', '@babel/runtime'],
     },
   },
 });

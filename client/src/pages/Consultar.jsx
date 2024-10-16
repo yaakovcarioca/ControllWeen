@@ -18,17 +18,17 @@ function Consultar() {
 
     // Chamada à API para contar usuários cadastrados e validados
     fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/convidados/contar')
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          setTotalCadastrados(data.total);
-          setTotalValidados(data.validados);
-        }
-      })
-      .catch((error) => {
-        console.error('Erro ao contar usuários:', error);
-        setMensagem('Erro ao contar os usuários.');
-      });
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        setTotalCadastrados(data.total);
+        setTotalValidados(data.validados);
+      }
+    })
+    .catch((error) => {
+      console.error('Erro ao contar usuários:', error);
+      setMensagem('Erro ao contar os usuários.');
+    });
   }, []);
   
   const handleDelete = (id) => {

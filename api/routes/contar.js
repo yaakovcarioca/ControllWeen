@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../db');
 
 // Rota para contar usuários cadastrados e validados
-router.get('/contar', (req, res) => {
+router.get('/', (req, res) => {
   const queryTotal = 'SELECT COUNT(*) AS total FROM convidados';
   const queryValidados = 'SELECT COUNT(*) AS validados FROM convidados WHERE validado = "yes"';
 

@@ -26,8 +26,8 @@ app.use(express.json());
 app.use('/cadastrar', cadastrarRoute);
 app.use('/validar', validarRoute);
 app.use('/gerar-qrcode', qrcodeRoute);
-app.use('/convidados', consultarRoute); // Rota para listar convidados
-app.use('/convidados/contar', contarRoute); // Rota para contar usuários
+app.use('/convidados', consultarRoute);
+app.use('/convidados/contar', contarRoute);
 
 // Permite servir arquivos estáticos da pasta 'public'
 app.use('/public', express.static(path.join(__dirname, 'public')));

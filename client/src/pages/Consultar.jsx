@@ -6,14 +6,20 @@ function Consultar() {
 
   // Chamada à API para buscar todos os convidados
   useEffect(() => {
-    fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/convidados')
+    fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/convidados', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
       .then((response) => response.json())
-      .then((data) => setConvidados(data))
+      .then((data) => setConvidados(data.convidados))
       .catch((error) => {
         console.error('Erro ao buscar convidados:', error);
         setMensagem('Erro ao carregar a lista de convidados.');
       });
   }, []);
+  
 
   const handleDelete = (id) => {
     if (window.confirm('Tem certeza que deseja excluir?')) {

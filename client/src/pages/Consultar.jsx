@@ -6,7 +6,7 @@ function Consultar() {
 
   // Chamada à API para buscar todos os convidados
   useEffect(() => {
-    fetch('https://controllween.360brave.com/api/convidados.php')
+    fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/convidados')
       .then((response) => response.json())
       .then((data) => setConvidados(data))
       .catch((error) => {

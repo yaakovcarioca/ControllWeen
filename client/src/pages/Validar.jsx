@@ -18,7 +18,7 @@ function Validar() {
         // Parar o escaneamento após a leitura bem-sucedida
         html5QrCode.stop().then(() => {
           // Fazer a requisição para validar o ID obtido do QR Code
-          fetch(`https://controllween.360brave.com/api/validar.php?id=${decodedText}`)
+          fetch(`https://360brave-controllween-api-360.370fnn.easypanel.host/validar.php?id=${decodedText}`)
             .then((response) => response.json())
             .then((data) => {
               if (data.message) {

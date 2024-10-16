@@ -12,7 +12,7 @@ function Cadastrar() {
     const novoConvidado = { nome, telefone };
 
     // Chamar o endpoint de cadastro via POST
-    fetch('https://controllween.360brave.com/api/cadastrar.php', {
+    fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/cadastrar.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

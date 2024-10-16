@@ -6,7 +6,7 @@ function Consultar() {
 
   // Chamada à API para buscar todos os convidados
   useEffect(() => {
-    fetch('https://controllween.360brave.com/api/convidados.php')
+    fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/convidados.php')
       .then((response) => response.json())
       .then((data) => setConvidados(data))
       .catch((error) => {
@@ -17,7 +17,7 @@ function Consultar() {
 
   const handleDelete = (id) => {
     if (window.confirm('Tem certeza que deseja excluir?')) {
-      fetch(`https://controllween.360brave.com/api/excluir.php?id=${id}`, {
+      fetch(`https://360brave-controllween-api-360.370fnn.easypanel.host/excluir.php?id=${id}`, {
         method: 'DELETE',
       })
         .then((response) => response.json())

@@ -9,6 +9,7 @@ const cadastrarRoute = require('./routes/cadastrar');
 const validarRoute = require('./routes/validar');
 const qrcodeRoute = require('./routes/qrcode');
 const consultarRoute = require('./routes/consultar'); // Importe a rota de consulta
+const contarRoute = require('./routes/contar');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,9 +26,12 @@ app.use(express.json());
 app.use('/cadastrar', cadastrarRoute);
 app.use('/validar', validarRoute);
 app.use('/gerar-qrcode', qrcodeRoute);
-app.use('/convidados', consultarRoute); // Adicione a rota para listar convidados
+app.use('/convidados', consultarRoute); // Rota para listar convidados
+app.use('/convidados/contar', contarRoute); // Rota para contar usuários
+
 // Permite servir arquivos estáticos da pasta 'public'
 app.use('/public', express.static(path.join(__dirname, 'public')));
+
 // Iniciar o servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);

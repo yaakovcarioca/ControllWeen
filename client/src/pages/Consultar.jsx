@@ -64,7 +64,7 @@ function Consultar() {
       .then((data) => {
         if (data.success) {
           const qrCodeUrl = data.qrcode; // URL do QR Code retornada pela API
-          const message = `Olá, você está recebendo o seu QR Code para entrada na festa de Halloween. Guarde para garantir sua entrada. Acesse seu QR Code aqui: ${qrCodeUrl}`;
+          const message = `Olá, você está recebendo o seu QR Code para entrada na festa de Halloween. <br> Guarde para garantir sua entrada. Acesse seu QR Code aqui: ${qrCodeUrl}`;
           const whatsappUrl = `https://api.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(message)}`;
   
           // Abre a URL do WhatsApp para enviar a mensagem com o link do QR Code

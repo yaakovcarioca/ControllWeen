@@ -10,7 +10,15 @@ function Consultar() {
   useEffect(() => {
     fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/convidados')
       .then((response) => response.json())
-      .then((data) => setConvidados(data.convidados))
+      .then((data) => {
+        // Verifica se data.convidados é um array antes de definir o estado
+        if (Array.isArray(data.convidados)) {
+          setConvidados(data.convidados);
+        } else {
+          setConvidados([]); // Garante que o estado seja um array
+          setMensagem('Nenhum convidado encontrado.');
+        }
+      })
       .catch((error) => {
         console.error('Erro ao buscar convidados:', error);
         setMensagem('Erro ao carregar a lista de convidados.');
@@ -30,7 +38,7 @@ function Consultar() {
         setMensagem('Erro ao contar os usuários.');
       });
   }, []);
-
+  
   const handleDelete = (id) => {
     if (window.confirm('Tem certeza que deseja excluir?')) {
       fetch(`https://360brave-controllween-api-360.370fnn.easypanel.host/convidados/${id}`, {
@@ -58,27 +66,6 @@ function Consultar() {
     }
   };
 
-  const handleSendQr = (id, telefone) => {
-    fetch(`https://360brave-controllween-api-360.370fnn.easypanel.host/gerar-qrcode/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          const qrCodeUrl = data.qrcode; // URL do QR Code retornada pela API
-          const message = `Olá, você está recebendo o seu QR Code para entrada na festa de Halloween. Guarde para garantir sua entrada. Acesse seu QR Code aqui: ${qrCodeUrl}`;
-          const whatsappUrl = `https://api.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(message)}`;
-  
-          // Abre a URL do WhatsApp para enviar a mensagem com o link do QR Code
-          window.open(whatsappUrl, '_blank');
-        } else {
-          setMensagem('Erro ao gerar o QR Code.');
-        }
-      })
-      .catch((error) => {
-        console.error('Erro ao gerar o QR Code:', error);
-        setMensagem('Erro ao gerar o QR Code.');
-      });
-  };
-
   return (
     <div>
       <h2>Lista de Convidados</h2>
@@ -101,14 +88,14 @@ function Consultar() {
           </tr>
         </thead>
         <tbody>
-          {convidados.map((convidado) => (
+          {/* Verifica se convidados é um array antes de usar o map */}
+          {Array.isArray(convidados) && convidados.map((convidado) => (
             <tr key={convidado.id}>
               <td>{convidado.id}</td>
               <td>{convidado.nome}</td>
               <td>{convidado.telefone}</td>
               <td>
                 <button onClick={() => handleDelete(convidado.id)}>Excluir</button>
-                <br/>
                 <button onClick={() => handleSendQr(convidado.id, convidado.telefone)}>Enviar QR</button>
               </td>
               <td>{convidado.validado === 'yes' ? 'Sim' : 'Não'}</td>

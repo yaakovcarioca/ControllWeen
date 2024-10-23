@@ -9,4 +9,8 @@ export default defineConfig({
       external: ['@babel/runtime'],
     },
   },
+
+  // Configuração para lidar com as rotas no modo SPA
+  optimizeDeps: {},
+  base: '/',
 });

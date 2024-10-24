@@ -50,7 +50,7 @@ function Consultar() {
     try {
       const generateQrCodeFunction = httpsCallable(functions, 'generateQrCode');
       const result = await generateQrCodeFunction({ id });
-      const qrCodeUrl = result.data.qrCodeUrl;
+      const qrCodeUrl = result.data.qrcodeUrl;
       const message = `Olá, você está recebendo o seu QR Code para entrada na festa de Halloween. Guarde para garantir sua entrada. Acesse seu QR Code aqui: ${qrCodeUrl}`;
       const whatsappUrl = `https://api.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(message)}`;
       
@@ -60,6 +60,7 @@ function Consultar() {
       setMensagem('Erro ao gerar e enviar o QR Code.');
     }
   };
+  
 
   return (
     <div>

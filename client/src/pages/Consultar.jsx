@@ -1,9 +1,6 @@
-// src/pages/Consultar.jsx
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { httpsCallable } from 'firebase/functions';
-import { functions } from '../../firebase';
 
 function Consultar() {
   const [convidados, setConvidados] = useState([]);
@@ -11,18 +8,19 @@ function Consultar() {
   const [totalCadastrados, setTotalCadastrados] = useState(0);
   const [totalValidados, setTotalValidados] = useState(0);
 
-  // Buscar todos os convidados e contar usuários
+  // Função para buscar todos os convidados do Firestore
   useEffect(() => {
     const fetchConvidados = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'convidados'));
         const convidadosData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+          id: doc.id, // Captura o ID do documento
+          ...doc.data(), // Captura os dados do documento (nome, telefone, validado)
         }));
+
         setConvidados(convidadosData);
         setTotalCadastrados(convidadosData.length);
-        setTotalValidados(convidadosData.filter((c) => c.validado).length);
+        setTotalValidados(convidadosData.filter((convidado) => convidado.validado).length);
       } catch (error) {
         console.error('Erro ao buscar convidados:', error);
         setMensagem('Erro ao carregar a lista de convidados.');
@@ -32,13 +30,26 @@ function Consultar() {
     fetchConvidados();
   }, []);
 
+  // Função para enviar o QR Code via WhatsApp
+  const handleSendQr = (id, telefone) => {
+    const qrCodeUrl = `https://controllween.360brave.com/qr-codes/${id}.png`;
+    const message = `Olá, você está recebendo o seu QR Code para entrada na festa de Halloween. Guarde para garantir sua entrada. Acesse seu QR Code aqui: ${qrCodeUrl}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappUrl, '_blank');
+  };
+
+  // Função para excluir um convidado
   const handleDelete = async (id) => {
     if (window.confirm('Tem certeza que deseja excluir?')) {
       try {
         await deleteDoc(doc(db, 'convidados', id));
-        setConvidados((prev) => prev.filter((convidado) => convidado.id !== id));
+        setConvidados(convidados.filter((convidado) => convidado.id !== id));
         setMensagem('Convidado excluído com sucesso.');
         setTotalCadastrados((prev) => prev - 1);
+        if (convidados.find((convidado) => convidado.id === id).validado) {
+          setTotalValidados((prev) => prev - 1);
+        }
       } catch (error) {
         console.error('Erro ao excluir convidado:', error);
         setMensagem('Erro ao excluir o convidado.');
@@ -46,32 +57,16 @@ function Consultar() {
     }
   };
 
-  const handleSendQr = async (id, telefone) => {
-    try {
-      const generateQrCodeFunction = httpsCallable(functions, 'generateQrCode');
-      const result = await generateQrCodeFunction({ id });
-      const qrCodeUrl = result.data.qrcodeUrl;
-      const message = `Olá, você está recebendo o seu QR Code para entrada na festa de Halloween. Guarde para garantir sua entrada. Acesse seu QR Code aqui: ${qrCodeUrl}`;
-      const whatsappUrl = `https://api.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(message)}`;
-      
-      window.open(whatsappUrl, '_blank');
-    } catch (error) {
-      console.error('Erro ao gerar e enviar QR Code:', error);
-      setMensagem('Erro ao gerar e enviar o QR Code.');
-    }
-  };
-  
-
-  
-
   return (
     <div>
       <h2>Lista de Convidados</h2>
       {mensagem && <p>{mensagem}</p>}
-      <div>
+
+      <div style={{ marginBottom: '20px' }}>
         <p>Usuários cadastrados: {totalCadastrados}</p>
         <p>Usuários validados: {totalValidados}</p>
       </div>
+
       <table>
         <thead>
           <tr>

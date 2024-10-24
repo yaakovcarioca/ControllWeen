@@ -13,8 +13,9 @@ const logger = require("firebase-functions/logger");
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const QRCode = require('qrcode');
-const cors = require('cors')({ origin: 'https://controllween.360brave.com' });
+const cors = require('cors')({ origin: ['https://controllween.360brave.com', 'http://localhost:5173'] });
 
+// Inicializar o Firebase Admin
 admin.initializeApp();
 const db = admin.firestore();
 
@@ -34,7 +35,6 @@ exports.generateQrCode = functions.https.onRequest((req, res) => {
       const qrCodeData = `https://controllween.360brave.com/validar?id=${id}`;
       const qrCodeUrl = await QRCode.toDataURL(qrCodeData);
 
-      // Atualizar o documento do convidado no Firestore com a URL do QR Code
       await db.collection('convidados').doc(id).update({
         qrCodeUrl,
       });
@@ -46,6 +46,7 @@ exports.generateQrCode = functions.https.onRequest((req, res) => {
     }
   });
 });
+
 
 
 

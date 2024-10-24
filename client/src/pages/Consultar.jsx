@@ -62,6 +62,8 @@ function Consultar() {
   };
   
 
+  
+
   return (
     <div>
       <h2>Lista de Convidados</h2>

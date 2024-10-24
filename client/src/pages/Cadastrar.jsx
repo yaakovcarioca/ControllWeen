@@ -1,68 +1,52 @@
+// src/pages/Cadastrar.jsx
 import React, { useState } from 'react';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 function Cadastrar() {
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
   const [mensagem, setMensagem] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleCadastro = async () => {
+    if (!nome || !telefone) {
+      setMensagem('Nome e telefone são obrigatórios!');
+      return;
+    }
 
-    // Preparar os dados a serem enviados
-    const novoConvidado = { nome, telefone };
-
-    // Chamar o endpoint de cadastro via POST
-    fetch('https://controllween.onrender.com/cadastrar', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        nome: nome.trim(),
-        telefone: telefone.trim(),
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          setMensagem('Convidado cadastrado com sucesso!');
-          setNome('');
-          setTelefone('');
-        } else {
-          setMensagem(data.message || 'Erro ao cadastrar o convidado.');
-        }
-      })
-      .catch((error) => {
-        console.error('Erro ao cadastrar:', error);
-        setMensagem('Erro ao cadastrar o convidado.');
+    try {
+      const docRef = await addDoc(collection(db, 'convidados'), {
+        nome,
+        telefone,
+        validado: false, // Inicia com a validação como falsa
       });
+      setMensagem('Convidado cadastrado com sucesso!');
+      setNome('');
+      setTelefone('');
+      console.log('Convidado cadastrado com ID:', docRef.id);
+    } catch (error) {
+      console.error('Erro ao cadastrar convidado:', error);
+      setMensagem('Erro ao cadastrar convidado.');
+    }
   };
 
   return (
     <div>
       <h2>Cadastrar Convidado</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Nome:
-          <input
-            type="text"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Telefone:
-          <input
-            type="text"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-            required
-          />
-        </label>
-        <button type="submit">Cadastrar</button>
-      </form>
       {mensagem && <p>{mensagem}</p>}
+      <input
+        type="text"
+        placeholder="Nome"
+        value={nome}
+        onChange={(e) => setNome(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Telefone"
+        value={telefone}
+        onChange={(e) => setTelefone(e.target.value)}
+      />
+      <button onClick={handleCadastro}>Cadastrar</button>
     </div>
   );
 }

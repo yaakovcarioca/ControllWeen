@@ -7,7 +7,7 @@ const router = express.Router();
 // Rota para gerar e salvar QR Code
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  const qrText = `https://360brave-controllween-api-360.370fnn.easypanel.host/validar?id=${id}`;
+  const qrText = `https://controllween.onrender.com/validar?id=${id}`;
   const qrImagePath = path.join(__dirname, `../public/qrcodes/${id}.png`);
 
   // Gera o QR Code e salva como imagem PNG
@@ -18,7 +18,7 @@ router.get('/:id', (req, res) => {
     }
 
     // Retorna a URL da imagem do QR Code
-    const qrCodeUrl = `https://360brave-controllween-api-360.370fnn.easypanel.host/public/qrcodes/${id}.png`;
+    const qrCodeUrl = `https://controllween.onrender.com/public/qrcodes/${id}.png`;
     res.json({ success: true, qrcode: qrCodeUrl });
   });
 });

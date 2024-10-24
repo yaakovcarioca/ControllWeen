@@ -8,7 +8,7 @@ function Consultar() {
   const [totalCadastrados, setTotalCadastrados] = useState(0);
   const [totalValidados, setTotalValidados] = useState(0);
 
-  // Função para buscar todos os convidados do Firestore
+  // Função para buscar todos os convidados do firestore
   useEffect(() => {
     const fetchConvidados = async () => {
       try {

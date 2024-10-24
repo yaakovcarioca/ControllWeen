@@ -32,7 +32,7 @@ function Consultar() {
 
   // Função para enviar o QR Code via WhatsApp
   const handleSendQr = (id, telefone) => {
-    const viewQrUrl = `https://controllween.360brave.com/view-qr/${id}`;
+    const viewQrUrl = `https://controllween-api.web.app/view-qr/${id}`;
     const message = `Olá, você está recebendo o seu QR Code para entrada na festa de Halloween. Acesse seu QR Code aqui: ${viewQrUrl}`;
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(message)}`;
   

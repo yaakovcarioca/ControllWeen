@@ -22,7 +22,7 @@ function Cadastrar() {
       });
 
       // Gera a URL do QR code para esse convidado
-      const qrCodeUrl = `https://controllween.360brave.com/validar?id=${docRef.id}`;
+      const qrCodeUrl = `https://controllween-api.web.app/validar?id=${docRef.id}`;
 
       // Atualiza o documento com a URL do QR code
       await updateDoc(doc(db, 'convidados', docRef.id), {

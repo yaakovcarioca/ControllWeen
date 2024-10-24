@@ -18,8 +18,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/cadastrar" element={<Cadastrar />} />
           <Route path="/consultar" element={<Consultar />} />
-          <Route path="/view-qr/:id" element={<ViewQr />} />
           <Route path="/validar" element={<Validar />} />
+          <Route path="/view-qr/:id" element={<ViewQr />} />
         </Routes>
       </main>
     </Router>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { db } from '../../firebase';
-import { collection, addDoc } from 'firebase/firestore';
-import QRCode from 'qrcode';
+import { collection, addDoc, doc, updateDoc } from 'firebase/firestore';
 
 function Cadastrar() {
   const [nome, setNome] = useState('');
@@ -22,26 +21,15 @@ function Cadastrar() {
         validado: false,
       });
 
-      // Gera a URL do QR code
-      const qrCodeData = `https://controllween.360brave.com/validar?id=${docRef.id}`;
+      // Gera a URL do QR code para esse convidado
+      const qrCodeUrl = `https://controllween.360brave.com/validar?id=${docRef.id}`;
 
-      // Gera o QR code em uma URL base64
-      QRCode.toDataURL(qrCodeData, (err, url) => {
-        if (err) {
-          console.error('Erro ao gerar QR Code:', err);
-          setMensagem('Erro ao gerar QR Code.');
-          return;
-        }
-
-        // Cria um link para download do QR code gerado
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `${docRef.id}.png`;
-        link.click();
-
-        setMensagem('Convidado cadastrado com sucesso! O QR Code foi gerado.');
+      // Atualiza o documento com a URL do QR code
+      await updateDoc(doc(db, 'convidados', docRef.id), {
+        qrUrl: qrCodeUrl,
       });
 
+      setMensagem('Convidado cadastrado com sucesso!');
       setNome('');
       setTelefone('');
     } catch (error) {

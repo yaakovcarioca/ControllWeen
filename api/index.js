@@ -12,7 +12,7 @@ const consultarRoute = require('./routes/consultar');
 const contarRoute = require('./routes/contar');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 // Middleware para CORS
 app.use(cors({

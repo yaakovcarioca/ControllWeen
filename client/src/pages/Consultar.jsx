@@ -8,7 +8,7 @@ function Consultar() {
 
   // Chamada à API para buscar todos os convidados e contar usuários
   useEffect(() => {
-    fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/convidados')
+    fetch('https://controllween.onrender.com/convidados')
       .then((response) => response.json())
       .then((data) => setConvidados(data.convidados))
       .catch((error) => {
@@ -17,7 +17,7 @@ function Consultar() {
       });
 
     // Chamada à API para contar usuários cadastrados e validados
-    fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/convidados/contar')
+    fetch('https://controllween.onrender.com/convidados/contar')
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
@@ -33,7 +33,7 @@ function Consultar() {
 
   const handleDelete = (id) => {
     if (window.confirm('Tem certeza que deseja excluir?')) {
-      fetch(`https://360brave-controllween-api-360.370fnn.easypanel.host/convidados/${id}`, {
+      fetch(`https://controllween.onrender.com/convidados/${id}`, {
         method: 'DELETE',
       })
         .then((response) => response.json())
@@ -59,7 +59,7 @@ function Consultar() {
   };
 
   const handleSendQr = (id, telefone) => {
-    fetch(`https://360brave-controllween-api-360.370fnn.easypanel.host/gerar-qrcode/${id}`)
+    fetch(`https://controllween.onrender.com/gerar-qrcode/${id}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {

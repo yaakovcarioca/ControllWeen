@@ -36,7 +36,7 @@ function Validar() {
               }
 
               // Fazer a requisição para validar o ID obtido do QR Code
-              fetch('https://360brave-controllween-api-360.370fnn.easypanel.host/validar', {
+              fetch('https://controllween.onrender.com/validar', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',

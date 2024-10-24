@@ -8,18 +8,21 @@ require('dotenv').config();
 const cadastrarRoute = require('./routes/cadastrar');
 const validarRoute = require('./routes/validar');
 const qrcodeRoute = require('./routes/qrcode');
-const consultarRoute = require('./routes/consultar'); // Importe a rota de consulta
+const consultarRoute = require('./routes/consultar'); 
 const contarRoute = require('./routes/contar');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware para CORS e parsing de JSON
+// Middleware para CORS
 app.use(cors({
-  origin: 'https://controllween.360brave.com', // Substitua pela URL do seu frontend
+  origin: 'https://controllween.360brave.com', // URL do frontend
   methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // Se precisar enviar cookies de autenticação
 }));
+
+
 app.use(express.json());
 
 // Rotas

@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 function Validar() {
   const [mensagem, setMensagem] = useState('');
@@ -11,7 +13,7 @@ function Validar() {
     const html5QrCode = new Html5Qrcode("qr-reader");
 
     html5QrCode.start(
-      { facingMode: "environment" }, // Pode ser 'user' para câmera frontal
+      { facingMode: "environment" },
       {
         fps: 10,
         qrbox: { width: 250, height: 250 },
@@ -19,15 +21,14 @@ function Validar() {
       (decodedText) => {
         try {
           // Parar o escaneamento após a leitura bem-sucedida
-          html5QrCode.stop().then(() => {
-            setProcessando(true); // Exibe mensagem de "Processando..."
+          html5QrCode.stop().then(async () => {
+            setProcessando(true);
 
             try {
               // Supondo que o QR Code contenha uma URL com o ID como parâmetro, por exemplo: https://.../validar?id=123
               const url = new URL(decodedText);
               const convidadoId = url.searchParams.get('id');
 
-              // Verifica se o ID foi encontrado no QR Code
               if (!convidadoId) {
                 setMensagem('QR Code inválido. ID não encontrado.');
                 setModalVisible(true);
@@ -35,29 +36,30 @@ function Validar() {
                 return;
               }
 
-              // Fazer a requisição para validar o ID obtido do QR Code
-              fetch('https://controllween.onrender.com/validar', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id: convidadoId }),
-              })
-                .then((response) => response.json())
-                .then((data) => {
-                  setMensagem(data.message || 'Erro ao validar o convidado.');
-                  setModalVisible(true);
-                  setProcessando(false);
-                })
-                .catch((error) => {
-                  console.error('Erro ao validar:', error);
-                  setMensagem('Erro ao validar o convidado.');
-                  setModalVisible(true);
-                  setProcessando(false);
-                });
+              // Buscar o documento do convidado pelo ID no Firestore
+              const docRef = doc(db, 'convidados', convidadoId);
+              const docSnap = await getDoc(docRef);
+
+              if (docSnap.exists()) {
+                const convidado = docSnap.data();
+
+                // Verificar se já foi validado
+                if (convidado.validado) {
+                  setMensagem('Usuário já validado!');
+                } else {
+                  // Atualizar o campo "validado" para "true"
+                  await updateDoc(docRef, { validado: true });
+                  setMensagem(`Olá, ${convidado.nome}, boa festa!`);
+                }
+              } else {
+                setMensagem('Convidado não encontrado.');
+              }
+
+              setModalVisible(true);
+              setProcessando(false);
             } catch (error) {
-              console.error('Erro ao processar a URL do QR Code:', error);
-              setMensagem('Erro ao processar a URL do QR Code.');
+              console.error('Erro ao validar convidado:', error);
+              setMensagem('Erro ao validar o convidado.');
               setModalVisible(true);
               setProcessando(false);
             }
@@ -88,14 +90,12 @@ function Validar() {
     // Reinicia o QR code scanner
     const html5QrCode = new Html5Qrcode("qr-reader");
     html5QrCode.start(
-      { facingMode: "environment" }, // Pode ser 'user' para câmera frontal
+      { facingMode: "environment" },
       {
         fps: 10,
         qrbox: { width: 250, height: 250 },
       },
-      (decodedText) => {
-        // Lógica de leitura do QR code...
-      },
+      () => {},
       (errorMessage) => {
         console.warn('Erro na leitura do QR Code:', errorMessage);
       }
@@ -133,26 +133,26 @@ function Validar() {
           align-items: center;
         }
         .modal-content {
-          background: #1a1a1a; /* Fundo escuro para melhor contraste */
+          background: #1a1a1a;
           padding: 20px;
           border-radius: 5px;
           text-align: center;
-          color: #ffffff; /* Texto branco para visibilidade */
+          color: #ffffff;
         }
         .modal-content p {
           margin-bottom: 10px;
-          color: #ffffff; /* Texto branco */
+          color: #ffffff;
         }
         .modal-content button {
           padding: 10px 20px;
           border: none;
-          background: #007bff; /* Cor de fundo do botão */
-          color: white; /* Texto branco */
+          background: #007bff;
+          color: white;
           border-radius: 5px;
           cursor: pointer;
         }
         .modal-content button:hover {
-          background: #0056b3; /* Cor de fundo do botão ao passar o mouse */
+          background: #0056b3;
         }
       `}</style>
     </div>
